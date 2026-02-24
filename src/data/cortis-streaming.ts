@@ -1,0 +1,32 @@
+export const cortisWeeklyData = [
+  { weekEnding: '09/11/2025', total: 1382788, audio: 1023451, label: 'Sep 5' },
+  { weekEnding: '09/18/2025', total: 2125705, audio: 1837974, label: 'Sep 12' },
+  { weekEnding: '09/25/2025', total: 2127961, audio: 1864219, label: 'Sep 19' },
+  { weekEnding: '10/02/2025', total: 1917939, audio: 1689183, label: 'Sep 26' },
+  { weekEnding: '10/09/2025', total: 1781580, audio: 1522251, label: 'Oct 3' },
+  { weekEnding: '10/16/2025', total: 1640273, audio: 1410592, label: 'Oct 10' },
+  { weekEnding: '10/23/2025', total: 1576218, audio: 1358136, label: 'Oct 17' },
+  { weekEnding: '10/30/2025', total: 1622366, audio: 1388808, label: 'Oct 24' },
+  { weekEnding: '11/06/2025', total: 1517018, audio: 1320019, label: 'Oct 31' },
+  { weekEnding: '11/13/2025', total: 1433284, audio: 1245983, label: 'Nov 7' },
+  { weekEnding: '11/20/2025', total: 1351990, audio: 1169676, label: 'Nov 14' },
+  { weekEnding: '11/27/2025', total: 1320704, audio: 1149758, label: 'Nov 21' },
+  { weekEnding: '12/04/2025', total: 1444560, audio: 1263044, label: 'Nov 28' },
+  { weekEnding: '01/08/2026', total: 1293852, audio: 1138316, label: 'Jan 2' },
+  { weekEnding: '01/15/2026', total: 1268050, audio: 1124518, label: 'Jan 9' },
+  { weekEnding: '01/22/2026', total: 1191033, audio: 1053504, label: 'Jan 16' },
+  { weekEnding: '01/29/2026', total: 1235172, audio: 1061093, label: 'Jan 23' },
+  { weekEnding: '02/05/2026', total: 1098573, audio: 978128, label: 'Jan 30' },
+  { weekEnding: '02/12/2026', total: 991889, audio: 885236, label: 'Feb 6' },
+  { weekEnding: '02/19/2026', total: 998602, audio: 889920, label: 'Feb 13' },
+];
+
+export const cortisDailyData = [
+  { day: 'Fri 2/13', total: 156503, audio: 139329 },
+  { day: 'Sat 2/14', total: 149187, audio: 132336 },
+  { day: 'Sun 2/15', total: 137879, audio: 122214 },
+  { day: 'Mon 2/16', total: 140073, audio: 124434 },
+  { day: 'Tue 2/17', total: 138327, audio: 124207 },
+  { day: 'Wed 2/18', total: 137216, audio: 122694 },
+  { day: 'Thu 2/19', total: 139417, audio: 124706 },
+];
