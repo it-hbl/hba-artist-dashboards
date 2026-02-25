@@ -37,7 +37,7 @@ export default function TylaTab() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="This Week Total" value={latestWeek.total} change={wowChange} />
         <StatCard label="This Week Audio" value={latestWeek.audio} />
-        <StatCard label="Audio %" value={`${audioRatio}%`} />
+        <StatCard label="Audio Share" value={`${audioRatio}%`} tooltip="Percentage of total streams from audio platforms (Spotify, Apple Music, etc.) vs video (YouTube). Higher = more audio-driven." />
         <StatCard label="Previous Week" value={prevWeek.total} />
       </div>
 
