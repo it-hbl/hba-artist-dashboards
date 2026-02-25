@@ -25,6 +25,7 @@ export default function Home() {
               <h1 className="text-lg font-semibold text-white">HBA Artist Dashboards</h1>
             </div>
             <span className="text-xs text-[#8888a0]">Week of Feb 17–23, 2026</span>
+                <span className="text-[10px] text-[#666680]">Last data included: Feb 21, 2026 (streaming) · Feb 23, 2026 (radio)</span>
           </div>
           
           {/* Tabs */}
