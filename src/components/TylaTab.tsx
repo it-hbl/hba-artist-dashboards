@@ -4,6 +4,7 @@ import { SpotifyPlaylistTable, AppleMusicPlaylistTable, AmazonPlaylistTable } fr
 import { RadioSpinsSection } from "./RadioSection";
 import { tylaPlaylists, tylaRadio, tylaRadioCharts } from "@/data/tyla";
 import { tylaWeeklyData, tylaDailyData } from "@/data/tyla-streaming";
+import { DSP_COLORS, dailyTrackerDates, dailyTrackerData, weeklyStreamsData, socialFollowersData, radioData } from "@/data/tyla-extra";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, Legend } from "recharts";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -81,6 +82,142 @@ export default function TylaTab() {
               <Line type="monotone" dataKey="audio" name="Audio" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4, fill: '#8b5cf6' }} />
             </LineChart>
           </ResponsiveContainer>
+        </div>
+      </Card>
+
+      {/* Daily Platform Tracker */}
+      <Card>
+        <h3 className="font-semibold text-white mb-4">Daily Platform Tracker (Feb 16–22, 2026)</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b border-[#333]">
+                <th className="text-left py-2 pr-3 text-[#8888a0] font-medium">DSP</th>
+                <th className="text-left py-2 pr-3 text-[#8888a0] font-medium">Metric</th>
+                {dailyTrackerDates.map(d => <th key={d} className="text-right py-2 px-2 text-[#8888a0] font-medium">{d}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {dailyTrackerData.map((row, i) => (
+                <tr key={i} className="border-b border-[#1e1e2e] hover:bg-[#1a1a28]">
+                  <td className="py-2 pr-3 font-medium" style={{ color: DSP_COLORS[row.dsp] || '#fff' }}>{row.dsp}</td>
+                  <td className="py-2 pr-3 text-[#ccc]">{row.metric}</td>
+                  {row.values.map((v, j) => (
+                    <td key={j} className="text-right py-2 px-2 text-white tabular-nums">
+                      {v !== null ? v.toLocaleString() : <span className="text-[#555]">—</span>}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      {/* Weekly Streams On-Demand */}
+      <Card>
+        <h3 className="font-semibold text-white mb-4">Weekly Streams On-Demand</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#333]">
+                <th className="text-left py-2 text-[#8888a0] font-medium">Market</th>
+                <th className="text-right py-2 text-[#8888a0] font-medium">Release to Date</th>
+                <th className="text-right py-2 text-[#8888a0] font-medium">Last Week</th>
+                <th className="text-right py-2 text-[#8888a0] font-medium">This Week</th>
+                <th className="text-right py-2 text-[#8888a0] font-medium">Trend</th>
+              </tr>
+            </thead>
+            <tbody>
+              {weeklyStreamsData.map((row, i) => (
+                <tr key={i} className={`border-b border-[#1e1e2e] hover:bg-[#1a1a28] ${row.market === 'US' ? 'border-t border-t-[#333]' : ''}`}>
+                  <td className="py-2 text-white font-medium">{row.market}</td>
+                  <td className="text-right py-2 text-white tabular-nums">{row.atd.toLocaleString()}</td>
+                  <td className="text-right py-2 text-[#ccc] tabular-nums">{row.lp.toLocaleString()}</td>
+                  <td className="text-right py-2 text-white tabular-nums">{row.tp.toLocaleString()}</td>
+                  <td className={`text-right py-2 font-medium tabular-nums ${row.trend >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {row.trend >= 0 ? '↑' : '↓'} {Math.abs(row.trend).toFixed(2)}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      {/* Social Followers */}
+      <Card>
+        <h3 className="font-semibold text-white mb-4">Social Followers (Weekly)</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {socialFollowersData.map((s) => (
+            <div key={s.platform} className="bg-[#12121a] rounded-lg p-4 border border-[#1e1e2e]">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: s.color }} />
+                <span className="text-sm font-medium" style={{ color: s.color }}>{s.platform}</span>
+              </div>
+              <p className="text-xl font-bold text-white">{s.tp >= 1000000 ? `${(s.tp / 1000000).toFixed(1)}M` : `${(s.tp / 1000).toFixed(0)}K`}</p>
+              <p className={`text-xs mt-1 font-medium ${s.trend > 0 ? 'text-emerald-400' : s.trend < 0 ? 'text-red-400' : 'text-[#8888a0]'}`}>
+                {s.trend > 0 ? '↑' : s.trend < 0 ? '↓' : '—'} {Math.abs(s.trend).toFixed(2)}% WoW
+              </p>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Radio Charts */}
+      <Card>
+        <h3 className="font-semibold text-white mb-4">Radio Charts — CHANEL</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="text-sm font-medium text-[#8888a0] mb-3 uppercase tracking-wider">Building (Daily)</h4>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#333]">
+                  <th className="text-left py-2 text-[#8888a0] font-medium">Format</th>
+                  <th className="text-center py-2 text-[#8888a0] font-medium">LW</th>
+                  <th className="text-center py-2 text-[#8888a0] font-medium">TW</th>
+                  <th className="text-right py-2 text-[#8888a0] font-medium">+/-</th>
+                  <th className="text-right py-2 text-[#8888a0] font-medium">Gainer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {radioData.map((r) => (
+                  <tr key={r.format} className="border-b border-[#1e1e2e]">
+                    <td className="py-2 text-white font-medium">{r.format}</td>
+                    <td className="text-center py-2 text-[#ccc]">{r.buildRankLW}</td>
+                    <td className="text-center py-2 text-white font-bold">{r.buildRankTW}</td>
+                    <td className="text-right py-2 text-emerald-400">+{r.buildMove}</td>
+                    <td className="text-right py-2 text-yellow-400">{r.buildGainer || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h4 className="text-sm font-medium text-[#8888a0] mb-3 uppercase tracking-wider">Publishing (Weekly)</h4>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#333]">
+                  <th className="text-left py-2 text-[#8888a0] font-medium">Format</th>
+                  <th className="text-center py-2 text-[#8888a0] font-medium">LW</th>
+                  <th className="text-center py-2 text-[#8888a0] font-medium">TW</th>
+                  <th className="text-right py-2 text-[#8888a0] font-medium">+/-</th>
+                  <th className="text-right py-2 text-[#8888a0] font-medium">Gainer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {radioData.map((r) => (
+                  <tr key={r.format} className="border-b border-[#1e1e2e]">
+                    <td className="py-2 text-white font-medium">{r.format}</td>
+                    <td className="text-center py-2 text-[#ccc]">{r.pubRankLW}</td>
+                    <td className="text-center py-2 text-white font-bold">{r.pubRankTW}</td>
+                    <td className="text-right py-2 text-emerald-400">+{r.pubMove}</td>
+                    <td className="text-right py-2 text-yellow-400">{r.pubGainer || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </Card>
 
