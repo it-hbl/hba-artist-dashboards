@@ -35,7 +35,8 @@ export function StatCard({ label, value, change, suffix = "", tooltip, pctChange
         </div>
       )}
       {sparkData && sparkData.length > 1 && (
-        <div className="mt-2 h-8">
+        <div className="mt-2 h-8 relative">
+          <span className="absolute top-0 right-0 text-[9px] text-[#555570]">Last {sparkData.length}w</span>
           <svg viewBox={`0 0 ${sparkData.length * 20} 32`} className="w-full h-full" preserveAspectRatio="none">
             <defs>
               <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
