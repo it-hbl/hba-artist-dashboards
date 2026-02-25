@@ -34,8 +34,8 @@ export default function CortisTab() {
 
       {/* Summary stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="This Week Total" value={latestWeek.total} change={wowChange} />
-        <StatCard label="This Week Audio" value={latestWeek.audio} />
+        <StatCard label="This Week Total" value={latestWeek.total} change={wowChange} tooltip="Total on-demand streams across all platforms: Spotify, Apple Music, YouTube, Amazon Music, Pandora, and other DSPs." />
+        <StatCard label="This Week Audio" value={latestWeek.audio} tooltip="Audio-only streams from platforms like Spotify, Apple Music, Amazon Music, and Pandora. Excludes video streams (YouTube)." />
         <StatCard label="Audio Share" value={`${audioRatio}%`} tooltip="Percentage of total streams from audio platforms (Spotify, Apple Music, etc.) vs video (YouTube). Higher = more audio-driven." />
         <StatCard label="Previous Week" value={prevWeek.total} pctChange={((latestWeek.total - prevWeek.total) / prevWeek.total) * 100} sparkData={cortisWeeklyData.slice(-6).map(w => w.total)} />
       </div>
