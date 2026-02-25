@@ -6,6 +6,11 @@ import { cortisPlaylists, cortisRadio, cortisRadioStations } from "@/data/cortis
 import { cortisWeeklyData, cortisDailyData } from "@/data/cortis-streaming";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import AnnotatedAreaChart from "./AnnotatedAreaChart";
+import { computeDoD, makeDailyDot, makeDailyTooltip } from "./DailyDoD";
+
+const cortisDodData = computeDoD(cortisDailyData);
+const CortisDailyDot = makeDailyDot(cortisDodData);
+const CortisDailyTooltip = makeDailyTooltip(cortisDodData);
 
 const cortisAnnotations = [
   { label: 'Sep 12', pctChange: 53.7, reason: 'Initial release surge — strong first-week momentum for "GO!"' },
@@ -61,16 +66,17 @@ export default function CortisTab() {
         <h3 className="font-semibold text-white mb-4">Daily Breakdown (Feb 13–19)</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={cortisDailyData}>
+            <LineChart data={cortisDodData}>
               <XAxis dataKey="day" tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CortisDailyTooltip />} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Line type="monotone" dataKey="total" name="Total" stroke="#6366f1" strokeWidth={2} dot={{ r: 4, fill: '#6366f1' }} />
-              <Line type="monotone" dataKey="audio" name="Audio" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4, fill: '#8b5cf6' }} />
+              <Line type="monotone" dataKey="total" name="Total" stroke="#6366f1" strokeWidth={2} dot={<CortisDailyDot dataKey="total" />} />
+              <Line type="monotone" dataKey="audio" name="Audio" stroke="#8b5cf6" strokeWidth={2} dot={<CortisDailyDot dataKey="audio" />} />
             </LineChart>
           </ResponsiveContainer>
         </div>
+        <p className="text-[10px] text-[#555570] mt-2">● Dots highlight day-over-day changes {'>'} 5% — green for growth, red for decline</p>
       </Card>
 
       {/* Playlists */}

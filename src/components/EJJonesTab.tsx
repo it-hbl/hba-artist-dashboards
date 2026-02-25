@@ -4,12 +4,17 @@ import { RadioSpinsSection } from "./RadioSection";
 import { ejJonesWeeklyData, ejJonesDailyData, ejJonesRadio, ejJonesRadioChart, ejJonesRadioStations } from "@/data/ej-jones";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import AnnotatedAreaChart from "./AnnotatedAreaChart";
+import { computeDoD, makeDailyDot, makeDailyTooltip } from "./DailyDoD";
 
 const ejAnnotations = [
   { label: 'Oct 17', pctChange: -34.1, reason: 'Post-release cooldown after initial promotional push' },
   { label: 'Jan 23', pctChange: -29.5, reason: 'Pre-spike dip — possible algorithm reset before major playlist add' },
   { label: 'Jan 30', pctChange: 259.2, reason: 'Likely major playlist placement or viral moment driving ~3.6x streaming increase' },
 ];
+
+const ejDailyWithDoD = computeDoD(ejJonesDailyData);
+const EJDailyDot = makeDailyDot(ejDailyWithDoD);
+const EJDailyTooltip = makeDailyTooltip(ejDailyWithDoD);
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload) return null;
@@ -61,16 +66,17 @@ export default function EJJonesTab() {
         <h3 className="font-semibold text-white mb-4">Daily Breakdown (Feb 13–19)</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={ejJonesDailyData}>
+            <LineChart data={ejDailyWithDoD}>
               <XAxis dataKey="day" tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<EJDailyTooltip />} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Line type="monotone" dataKey="total" name="Total" stroke="#6366f1" strokeWidth={2} dot={{ r: 4, fill: '#6366f1' }} />
-              <Line type="monotone" dataKey="audio" name="Audio" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4, fill: '#8b5cf6' }} />
+              <Line type="monotone" dataKey="total" name="Total" stroke="#6366f1" strokeWidth={2} dot={<EJDailyDot dataKey="total" />} />
+              <Line type="monotone" dataKey="audio" name="Audio" stroke="#8b5cf6" strokeWidth={2} dot={<EJDailyDot dataKey="audio" />} />
             </LineChart>
           </ResponsiveContainer>
         </div>
+        <p className="text-[10px] text-[#555570] mt-2">● Dots highlight day-over-day changes {'>'} 5% — green for growth, red for decline</p>
       </Card>
 
       {/* Radio Spins */}
