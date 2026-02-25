@@ -13,7 +13,7 @@ export function StatCard({ label, value, change, suffix = "", tooltip, pctChange
         <p className="text-xs text-[#8888a0] uppercase tracking-wider">{label}</p>
         {tooltip && (
           <div className="relative group">
-            <span className="text-[#555570] hover:text-[#8888a0] cursor-help transition-colors text-xs">ⓘ</span>
+            <span className="text-[#7777a0] hover:text-[#aaaacc] cursor-help transition-colors text-sm font-bold">ⓘ</span>
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#1e1e2e] border border-[#2a2a3e] rounded-lg text-[11px] text-[#aaaacc] w-52 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50 shadow-xl">
               {tooltip}
               <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#1e1e2e]" />
