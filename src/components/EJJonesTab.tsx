@@ -2,7 +2,14 @@
 import { Card, StatCard } from "./Card";
 import { RadioSpinsSection } from "./RadioSection";
 import { ejJonesWeeklyData, ejJonesDailyData, ejJonesRadio, ejJonesRadioChart, ejJonesRadioStations } from "@/data/ej-jones";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import AnnotatedAreaChart from "./AnnotatedAreaChart";
+
+const ejAnnotations = [
+  { label: 'Oct 17', pctChange: -34.1, reason: 'Post-release cooldown after initial promotional push' },
+  { label: 'Jan 23', pctChange: -29.5, reason: 'Pre-spike dip — possible algorithm reset before major playlist add' },
+  { label: 'Jan 30', pctChange: 259.2, reason: 'Likely major playlist placement or viral moment driving ~3.6x streaming increase' },
+];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload) return null;
@@ -41,28 +48,12 @@ export default function EJJonesTab() {
       {/* Weekly trend chart */}
       <Card>
         <h3 className="font-semibold text-white mb-4">Weekly Streaming Totals (Total vs Audio)</h3>
-        <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={ejJonesWeeklyData.filter(d => d.audio > 0)}>
-              <defs>
-                <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="audioGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="label" tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Area type="monotone" dataKey="total" name="Total" stroke="#6366f1" fill="url(#totalGrad)" strokeWidth={2} />
-              <Area type="monotone" dataKey="audio" name="Audio Only" stroke="#8b5cf6" fill="url(#audioGrad)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <AnnotatedAreaChart
+          data={ejJonesWeeklyData.filter(d => d.audio > 0)}
+          annotations={ejAnnotations}
+          totalGradId="totalGrad"
+          audioGradId="audioGrad"
+        />
       </Card>
 
       {/* Daily breakdown */}

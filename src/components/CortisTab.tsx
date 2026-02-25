@@ -4,7 +4,12 @@ import { SpotifyPlaylistTable, AppleMusicPlaylistTable, AmazonPlaylistTable } fr
 import { RadioSpinsSection } from "./RadioSection";
 import { cortisPlaylists, cortisRadio, cortisRadioStations } from "@/data/cortis";
 import { cortisWeeklyData, cortisDailyData } from "@/data/cortis-streaming";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import AnnotatedAreaChart from "./AnnotatedAreaChart";
+
+const cortisAnnotations = [
+  { label: 'Sep 12', pctChange: 53.7, reason: 'Initial release surge — strong first-week momentum for "GO!"' },
+];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload) return null;
@@ -43,28 +48,12 @@ export default function CortisTab() {
       {/* Weekly trend chart */}
       <Card>
         <h3 className="font-semibold text-white mb-4">Weekly Streaming Totals (Total vs Audio)</h3>
-        <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={cortisWeeklyData}>
-              <defs>
-                <linearGradient id="cortisTotalGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="cortisAudioGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="label" tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Area type="monotone" dataKey="total" name="Total" stroke="#6366f1" fill="url(#cortisTotalGrad)" strokeWidth={2} />
-              <Area type="monotone" dataKey="audio" name="Audio Only" stroke="#8b5cf6" fill="url(#cortisAudioGrad)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <AnnotatedAreaChart
+          data={cortisWeeklyData}
+          annotations={cortisAnnotations}
+          totalGradId="cortisTotalGrad"
+          audioGradId="cortisAudioGrad"
+        />
       </Card>
 
       {/* Daily breakdown */}

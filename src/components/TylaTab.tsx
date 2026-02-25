@@ -5,7 +5,13 @@ import { RadioSpinsSection } from "./RadioSection";
 import { tylaPlaylists, tylaRadio, tylaRadioCharts } from "@/data/tyla";
 import { tylaWeeklyData, tylaDailyData } from "@/data/tyla-streaming";
 import { DSP_COLORS, dailyTrackerDates, dailyTrackerData, weeklyStreamsData, socialFollowersData, radioData } from "@/data/tyla-extra";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import AnnotatedAreaChart from "./AnnotatedAreaChart";
+
+const tylaAnnotations = [
+  { label: 'Nov 14', pctChange: 65.9, reason: 'Major streaming surge — likely new playlist placements or promotional push for "CHANEL"' },
+  { label: 'Jan 2', pctChange: 49.7, reason: 'Strong holiday-period growth — likely playlist refreshes and increased listening during holidays' },
+];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload) return null;
@@ -44,28 +50,12 @@ export default function TylaTab() {
       {/* Weekly trend chart */}
       <Card>
         <h3 className="font-semibold text-white mb-4">Weekly Streaming Totals (Total vs Audio)</h3>
-        <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={tylaWeeklyData}>
-              <defs>
-                <linearGradient id="tylaTotalGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="tylaAudioGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="label" tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#8888a0', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Area type="monotone" dataKey="total" name="Total" stroke="#6366f1" fill="url(#tylaTotalGrad)" strokeWidth={2} />
-              <Area type="monotone" dataKey="audio" name="Audio Only" stroke="#8b5cf6" fill="url(#tylaAudioGrad)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <AnnotatedAreaChart
+          data={tylaWeeklyData}
+          annotations={tylaAnnotations}
+          totalGradId="tylaTotalGrad"
+          audioGradId="tylaAudioGrad"
+        />
       </Card>
 
       {/* Daily breakdown */}
