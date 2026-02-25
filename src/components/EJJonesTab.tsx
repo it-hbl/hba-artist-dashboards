@@ -16,17 +16,6 @@ const ejDailyWithDoD = computeDoD(ejJonesDailyData);
 const EJDailyDot = makeDailyDot(ejDailyWithDoD);
 const EJDailyTooltip = makeDailyTooltip(ejDailyWithDoD);
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload) return null;
-  return (
-    <div className="bg-[#1e1e2e] border border-[#333] rounded-lg px-3 py-2 text-xs">
-      <p className="text-white font-medium mb-1">{label}</p>
-      {payload.map((p: any) => (
-        <p key={p.name} style={{ color: p.color }}>{p.name}: {typeof p.value === 'number' ? p.value.toLocaleString() : p.value}</p>
-      ))}
-    </div>
-  );
-};
 
 export default function EJJonesTab() {
   const latestWeek = ejJonesWeeklyData[ejJonesWeeklyData.length - 1];
