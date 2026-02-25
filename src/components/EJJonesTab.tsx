@@ -35,7 +35,7 @@ export default function EJJonesTab() {
         <StatCard label="This Week Total" value={latestWeek.total} change={wowChange} tooltip="Total on-demand streams across all platforms: Spotify, Apple Music, YouTube, Amazon Music, Pandora, and other DSPs." />
         <StatCard label="This Week Audio" value={latestWeek.audio} tooltip="Audio-only streams from platforms like Spotify, Apple Music, Amazon Music, and Pandora. Excludes video streams (YouTube)." />
         <StatCard label="Audio Share" value={`${audioRatio}%`} tooltip="Percentage of total streams from audio platforms (Spotify, Apple Music, etc.) vs video (YouTube). Higher = more audio-driven." />
-        <StatCard label="Previous Week" value={prevWeek.total} pctChange={((latestWeek.total - prevWeek.total) / prevWeek.total) * 100} sparkData={ejJonesWeeklyData.slice(-6).map(w => w.total)} />
+        <StatCard label="Previous Week" value={prevWeek.total} tooltip="Last week's total on-demand streams. The percentage and sparkline show the week-over-week trend across the last 6 weeks." pctChange={((latestWeek.total - prevWeek.total) / prevWeek.total) * 100} sparkData={ejJonesWeeklyData.slice(-6).map(w => w.total)} />
       </div>
 
       {/* Weekly trend chart */}
